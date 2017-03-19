@@ -3,4 +3,37 @@
  */
 import React, {Component} from 'react';
 import {Modal, Form, Input} from 'antd';
+const FormItem = Form.Item;
+
+class UserEditModal extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false
+        };
+    }
+
+    showModelHandler = e => {
+        if (e) e.stopPropagation();
+        this.setState({
+            visible: true
+        });
+    };
+
+    hideModelHandler = () => {
+        this.setState({
+            visible: false
+        });
+    };
+
+    okHandler = () => {
+        const {onOk}=this.props;
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                onOk(values);
+                this.hideModelHandler();
+            }
+        });
+    };
+}
 

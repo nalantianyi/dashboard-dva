@@ -1,5 +1,5 @@
 import React from 'react';
-import './Users.css';
+import styles from  './Users.css';
 import {connect} from 'dva';
 import {Table, Pagination, Popconfirm, Button} from 'antd';
 import {routerRedux} from 'dva/router';
@@ -61,7 +61,7 @@ class Users extends React.Component {
                 title:'Operation',
                 dataIndex:'operation',
                 render:(text,record)=>{
-                    <span className="operation">
+                    <span className={styles.operation}>
 
                     </span>
                 }
