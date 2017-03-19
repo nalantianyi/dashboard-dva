@@ -35,5 +35,24 @@ class UserEditModal extends Component {
             }
         });
     };
+
+    render(){
+        const {children}=this.props;
+        const {getFieldDecorator}=this.props.form;
+        const {name,email,website}=this.props.record;
+        const formItemLayout={
+            labelCol:{span:6},
+            wrapperCol:{span:14}
+        };
+
+        return (
+            <span>
+                <span onClick={this.showModelHandler}>
+                    {children}
+                </span>
+                <Modal title="Edit User" visible={this.state.visible} onOk={this.okHandler} onCancel={this.hideModelHandler}></Modal>
+            </span>
+        );
+    }
 }
 
