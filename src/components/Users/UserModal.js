@@ -50,7 +50,11 @@ class UserEditModal extends Component {
                 <span onClick={this.showModelHandler}>
                     {children}
                 </span>
-                <Modal title="Edit User" visible={this.state.visible} onOk={this.okHandler} onCancel={this.hideModelHandler}></Modal>
+                <Modal title="Edit User" visible={this.state.visible} onOk={this.okHandler} onCancel={this.hideModelHandler}>
+                    <Form horizontal onSubmit={this.okHandler}>
+                        <FormItem {...formItemLayout} label="Name">{getFieldDecorator('name',{initialValue:name})(<Input/>)}</FormItem>
+                    </Form>
+                </Modal>
             </span>
         );
     }
