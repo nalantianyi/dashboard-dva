@@ -4,6 +4,7 @@ import {connect} from 'dva';
 import {Table, Pagination, Popconfirm, Button} from 'antd';
 import {routerRedux} from 'dva/router';
 import {PAGE_SIZE} from '../../constants';
+import UserModal from './UserModal';
 
 class Users extends React.Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class Users extends React.Component {
         });
     };
 
-    pageChangeHandle = (dispatch, page) => {
+    pageChangeHandler = (dispatch, page) => {
         dispatch(routerRedux.push({
             pathname: 'users',
             query: {page}
@@ -53,23 +54,64 @@ class Users extends React.Component {
                 key: 'email'
             },
             {
-                title:'Website',
-                dataIndex:'website',
-                key:'website'
+                title: 'Website',
+                dataIndex: 'website',
+                key: 'website'
             },
             {
-                title:'Operation',
-                dataIndex:'operation',
-                render:(text,record)=>{
+                title: 'Operation',
+                dataIndex: 'operation',
+                render: (text, record) => {
                     <span className={styles.operation}>
+                        <UserModal record={record} onOk={this.editHandler.bind(null, record.id)}>
+                            <a>Edit</a>
+                        </UserModal>
+                        <Popconfirm title="Confirm to delete?" onConfirm={this.deleteHandle.bind(null, record.id)}>
+                            <a>Delete</a>
+                        </Popconfirm>
 
                     </span>
                 }
             }
         ];
         const {dispatch, list:dataSource, loading, total, page:current}=this.props;
+        return (
+            <div className={styles.normal}>
+                <div>
+                    <div className={styles.create}>
+                        <UserModal record={{}}
+                                   onOk={this.createHandler}>
+                            <Button type="primary">Create User</Button>
+                        </UserModal>
+                    </div>
+                    <Table columns={columns}
+                           dataSource={dataSource}
+                           loading={loading}
+                           rowKey={record => {
+                               record.id
+                           }}
+                           pagination={false}
+                    ></Table>
+                    <Pagination className="ant-table-pagination"
+                                total={total}
+                                current={current}
+                                pageSize={PAGE_SIZE}
+                                onChange={this.pageChangeHandler}
+                    ></Pagination>
+                </div>
+            </div>);
+
 
     }
 }
+function mapStateToProps(state){
+    const {list,total,page}=state.users;
+    return {
+        loading:state.loading.models.users,
+        list,
+        total,
+        page
+    };
+}
 
-export default Users;
+export default connect(mapStateToProps)(Users);
