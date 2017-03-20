@@ -1,13 +1,13 @@
 import dva from 'dva';
 import './index.css';
 import createLoading from 'dva-loading';
-import { browserHistory } from 'dva/router';
+import { hashHistory } from 'dva/router';
 import { message } from 'antd';
 
 
 const ERROR_MSG_DURATION = 3;
 const app = dva({
-    history:browserHistory,
+    history:hashHistory,
     onError(e){
         message.error(e.message,ERROR_MSG_DURATION);
     }

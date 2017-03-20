@@ -41,6 +41,8 @@ class Users extends React.Component {
     };
 
     render() {
+        const {dispatch, list:dataSource, loading, total, page:current}=this.props;
+
         const columns = [
             {
                 title: 'Name',
@@ -63,10 +65,11 @@ class Users extends React.Component {
                 dataIndex: 'operation',
                 render: (text, record) => {
                     <span className={styles.operation}>
-                        <UserModal record={record} onOk={this.editHandler.bind(null, record.id)}>
+                        <UserModal record={record} onOk={this.editHandler.bind(null, dispatch, record.id)}>
                             <a>Edit</a>
                         </UserModal>
-                        <Popconfirm title="Confirm to delete?" onConfirm={this.deleteHandle.bind(null, record.id)}>
+                        <Popconfirm title="Confirm to delete?"
+                                    onConfirm={this.deleteHandle.bind(null, dispatch, record.id)}>
                             <a>Delete</a>
                         </Popconfirm>
 
@@ -74,13 +77,12 @@ class Users extends React.Component {
                 }
             }
         ];
-        const {dispatch, list:dataSource, loading, total, page:current}=this.props;
         return (
             <div className={styles.normal}>
                 <div>
                     <div className={styles.create}>
                         <UserModal record={{}}
-                                   onOk={this.createHandler}>
+                                   onOk={this.createHandler.bind(null, dispatch)}>
                             <Button type="primary">Create User</Button>
                         </UserModal>
                     </div>
@@ -96,7 +98,7 @@ class Users extends React.Component {
                                 total={total}
                                 current={current}
                                 pageSize={PAGE_SIZE}
-                                onChange={this.pageChangeHandler}
+                                onChange={this.pageChangeHandler.bind(null, dispatch)}
                     ></Pagination>
                 </div>
             </div>);
@@ -104,10 +106,10 @@ class Users extends React.Component {
 
     }
 }
-function mapStateToProps(state){
-    const {list,total,page}=state.users;
+function mapStateToProps(state) {
+    const {list, total, page}=state.users;
     return {
-        loading:state.loading.models.users,
+        loading: state.loading.models.users,
         list,
         total,
         page
