@@ -63,7 +63,7 @@ class Users extends React.Component {
             {
                 title: 'Operation',
                 dataIndex: 'operation',
-                render: (text, record) => {
+                render: (text, record) => (
                     <span className={styles.operation}>
                         <UserModal record={record} onOk={this.editHandler.bind(null, dispatch, record.id)}>
                             <a>Edit</a>
@@ -72,9 +72,8 @@ class Users extends React.Component {
                                     onConfirm={this.deleteHandle.bind(null, dispatch, record.id)}>
                             <a>Delete</a>
                         </Popconfirm>
-
                     </span>
-                }
+                )
             }
         ];
         return (
